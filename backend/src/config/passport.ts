@@ -15,7 +15,6 @@ passport.use(
     async (req, username, password, done) => {
       try {
         const existingUser = await User.findOne({ username });
-        console.log({ existingUser})
         if (existingUser) {
           return done(null, false, { message: 'Username already exists' });
         }

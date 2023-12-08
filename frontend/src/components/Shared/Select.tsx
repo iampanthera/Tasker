@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import { Options } from "../interface/Options";
+import { Options } from '../../interface/Options';
 
 interface SelectProps {
   label: string;
@@ -16,9 +16,9 @@ const Select: React.FC<SelectProps> = ({
   setFilters,
 }) => {
   return (
-    <div className="ml-2">
+    <div className='ml-2'>
       <select
-        className="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className='block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
         onChange={(e) => {
           setFilters({ ...filters, [label]: e.target.value });
         }}

@@ -3,6 +3,7 @@
 import React from 'react';
 
 import { useCookies } from 'react-cookie';
+import { ToastContainer } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -26,8 +27,6 @@ const PrivateRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     return !!cookies.authToken;
   };
 
-  console.log('isAuth', isAuthenticated());
-
   if (!isAuthenticated()) {
     return <Navigate to='/login' replace />;
   }
@@ -37,22 +36,25 @@ const PrivateRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 
 const App: React.FC = () => {
   return (
-    <Router>
-      <Routes>
-        <Route path='/login' element={<Auth isLogin={true} />} />
+    <>
+      <Router>
+        <Routes>
+          <Route path='/login' element={<Auth isLogin={true} />} />
 
-        <Route path='/register' element={<Auth />} />
+          <Route path='/register' element={<Auth />} />
 
-        <Route
-          path='/home'
-          element={
-            <PrivateRoute>
-              <Home />
-            </PrivateRoute>
-          }
-        />
-      </Routes>
-    </Router>
+          <Route
+            path='/home'
+            element={
+              <PrivateRoute>
+                <Home />
+              </PrivateRoute>
+            }
+          />
+        </Routes>
+      </Router>
+      <ToastContainer />
+    </>
   );
 };
 

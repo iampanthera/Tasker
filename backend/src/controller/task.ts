@@ -47,10 +47,8 @@ export const getTasks = async (req: AuthenticatedRequest, res: Response) => {
 
     const totalTasksCount = await Task.countDocuments(queryObject);
 
-    console.log({ tasks });
     res.json({ tasks, totalTasksCount });
   } catch (error) {
-    console.log({ error });
     res.status(500).json({ message: 'Error fetching tasks' });
   }
 };
@@ -99,8 +97,6 @@ export const createTask = async (req: AuthenticatedRequest, res: Response) => {
 export const updateTask = async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { title, description, dueDate, priority, tags, status } = req.body;
-
-    console.log({ id: req.params.id });
 
     const task = await Task.findById(req.params.id);
 

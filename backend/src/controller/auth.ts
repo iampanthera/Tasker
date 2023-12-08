@@ -18,8 +18,6 @@ export async function register(req: Request, res: Response) {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    console.log({ firstName, lastName, email, password });
-
     const user = new User({
       firstName,
       lastName,
@@ -34,7 +32,6 @@ export async function register(req: Request, res: Response) {
       // user,
     });
   } catch (error) {
-    console.log({ error });
     res.status(500).json({ message: 'Error creating user' });
   }
 }
@@ -43,8 +40,6 @@ export async function register(req: Request, res: Response) {
 export async function login(req: Request, res: Response) {
   const { email, password } = req.body;
 
-  console.log({ email, password });
-
   try {
     const user = await User.findOne({ email });
 
@@ -52,7 +47,6 @@ export async function login(req: Request, res: Response) {
       return res.status(401).json({ message: 'Invalid username or password' });
     }
 
-    console.log({ password, U: user.password });
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
@@ -67,7 +61,6 @@ export async function login(req: Request, res: Response) {
       token,
     });
   } catch (error) {
-    console.log({ error });
     res.status(500).json({ message: 'Error logging in' });
   }
 }

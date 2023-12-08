@@ -7,7 +7,6 @@ import { PORT, MONGO_URI } from './utils/secrets';
 const app = express();
 
 // Connect to MongoDB
-console.log({ MONGO_URI });
 mongoose
   .connect(MONGO_URI)
   .then(() => console.log('Connected to MongoDB'))

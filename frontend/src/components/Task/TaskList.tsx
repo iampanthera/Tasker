@@ -1,7 +1,7 @@
 import { PencilIcon, TrashIcon } from '@heroicons/react/20/solid';
 
-import { Task } from '../interface/Task';
-import { PRIORITIES } from '../constants/priority';
+import { Task } from '../../interface/Task';
+import { PRIORITIES } from '../../constants/priority';
 
 interface TaskListProps {
   taskData: Task[];
