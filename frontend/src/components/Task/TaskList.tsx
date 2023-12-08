@@ -7,12 +7,14 @@ interface TaskListProps {
   taskData: Task[];
   handleTaskDelete: (id: string) => void;
   handleTaskEdit: (task: Task) => void;
+  onResetEditTask: () => void;
 }
 
 const TaskList: React.FC<TaskListProps> = ({
   taskData,
   handleTaskDelete,
   handleTaskEdit,
+  onResetEditTask,
 }) => {
   if (!taskData.length) {
     return (
@@ -21,6 +23,18 @@ const TaskList: React.FC<TaskListProps> = ({
       </div>
     );
   }
+
+  const confirmDelete = (taskId: string) => {
+    const isConfirmed = window.confirm(
+      'Are you sure you want to delete this task?'
+    );
+
+    if (isConfirmed) {
+      handleTaskDelete(taskId);
+      onResetEditTask();
+    }
+  };
+
   return (
     <div className='container mx-auto px-4'>
       <ul className='divide-y divide-gray-100'>
@@ -64,7 +78,7 @@ const TaskList: React.FC<TaskListProps> = ({
               <button
                 type='button'
                 className='inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-50'
-                onClick={() => handleTaskDelete(task._id)}
+                onClick={() => confirmDelete(task._id)}
               >
                 <TrashIcon
                   className='-ml-0.5 mr-1.5 h-5 w-5 text-red-500'

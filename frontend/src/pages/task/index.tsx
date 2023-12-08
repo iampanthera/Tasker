@@ -54,6 +54,8 @@ export default function Home() {
     setOpen(true);
   };
 
+  const resetEditTask = () => setTaskToEdit(null);
+
   const handleTaskDelete = async (id: string) => {
     try {
       await deleteTask(id, authToken);
@@ -110,6 +112,7 @@ export default function Home() {
         taskData={tasks}
         handleTaskDelete={handleTaskDelete}
         handleTaskEdit={handleTaskEdit}
+        onResetEditTask={resetEditTask}
       />
       <Pagination
         currentPage={currentPage}
