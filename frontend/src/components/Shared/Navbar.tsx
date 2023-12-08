@@ -3,17 +3,20 @@ import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useCookies } from 'react-cookie';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
 export default function Navbar() {
+  const navigate = useNavigate();
   const [cookies, setCookie, removeCookie] = useCookies(['authToken']);
 
   const handleSignOut = () => {
     removeCookie('authToken');
     toast.success('Signed out successfully');
+    navigate('/login');
   };
   return (
     <Disclosure as='nav' className='bg-gray-800'>
