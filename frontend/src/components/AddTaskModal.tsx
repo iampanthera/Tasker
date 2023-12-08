@@ -1,18 +1,14 @@
 import { Fragment, SetStateAction, useEffect, useRef, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-
 import { toast, ToastContainer } from 'react-toastify';
-
 import { useCookies } from 'react-cookie';
 
-import { createTask, editTask } from '../api/taskApi';
-
-import { Options } from '../interface/Options';
-import { Task } from '../interface/Task';
-
+import Filters from './Filters';
 import { PRIORITIES } from '../constants/priority';
 import { STATUS_LIST } from '../constants/status';
-import Filters from './Filters';
+import { createTask, editTask } from '../api/taskApi';
+import { Options } from '../interface/Options';
+import { Task } from '../interface/Task';
 
 interface AddTaskModalProps {
   open: boolean;
