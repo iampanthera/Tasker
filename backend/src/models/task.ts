@@ -1,17 +1,39 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema, Document } from 'mongoose';
 
-const Schema = mongoose.Schema;
+interface ITask extends Document {
+  title: string;
+  description?: string;
+  dueDate?: Date;
+  priority?: number;
+  status?: 'pending' | 'in progress' | 'completed';
+  tags?: string[];
+  user: Schema.Types.ObjectId;
+}
 
-const TaskSchema = new Schema({
-  title: { type: String, required: true },
-  description: { type: String },
-  dueDate: { type: Date },
-  priority: { type: Number, min: 1, max: 5 },
-  status: { type: String, enum: ['pending', 'in progress', 'completed'] },
-  tags: { type: [String] },
-  user: { type: Schema.Types.ObjectId, ref: 'User' },
-});
+const TaskSchema = new Schema<ITask>(
+  {
+    title: { type: String, required: true },
+    description: { type: String },
+    dueDate: { type: Date },
+    priority: { type: Number, min: 1, max: 5 },
+    status: {
+      type: String,
+      enum: ['pending', 'in progress', 'completed'],
+      default: 'pending',
+    },
+    tags: {
+      type: [String],
+      validate: [arrayLimit, 'Exceeded the maximum number of tags (5).'],
+    },
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  },
+  { timestamps: true }
+);
 
 TaskSchema.index({ title: 'text', description: 'text', tags: 'text' });
 
-export default mongoose.model('Task', TaskSchema);
+function arrayLimit(val: string[] | undefined) {
+  return !val || val.length <= 5;
+}
+
+export default mongoose.model<ITask>('Task', TaskSchema);

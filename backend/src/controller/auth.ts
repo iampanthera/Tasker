@@ -7,15 +7,14 @@ import { JWT_SECRET } from '../utils/secrets';
 
 // Route handler for signup
 export async function register(req: Request, res: Response) {
-  const username = req.body.username;
-  const password = req.body.password;
+  const { firstName, lastName, email, password } = req.body;
 
-  console.log({ username, password });
+  console.log({ firstName, password });
 
   console.log({ User: JSON.stringify(User) });
 
   try {
-    const existingUser = await User.findOne({ username });
+    const existingUser = await User.findOne({ email });
 
     if (existingUser) {
       return res.status(400).json({ message: 'Username already exists' });
@@ -23,13 +22,15 @@ export async function register(req: Request, res: Response) {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    console.log({ existingUser, hashedPassword, username });
+    console.log({ existingUser, hashedPassword });
 
-    const user = new User({ username, password: hashedPassword });
+    const user = new User({
+      firstName,
+      lastName,
+      email,
+      password: hashedPassword,
+    });
     await user.save();
-
-    // Generate authentication token using passport
-    // const token = await passport.authenticate('local-signup')();
 
     // Send response with auth token
     res.status(201).json({
@@ -44,26 +45,23 @@ export async function register(req: Request, res: Response) {
 
 // Route handler for login
 export async function login(req: Request, res: Response) {
-  const username = req.body.username;
-  const password = req.body.password;
+  const { email, password } = req.body;
 
-  console.log({ username, password });
+  console.log({ email, password });
 
   try {
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ email });
 
     if (!user) {
       return res.status(401).json({ message: 'Invalid username or password' });
     }
 
+    console.log({ password, U: user.password });
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
       return res.status(401).json({ message: 'Invalid username or password' });
     }
-
-    // Generate authentication token using passport
-    // const token = await passport.authenticate('local-login')();
 
     const token = `Bearer ${jwt.sign({ user }, JWT_SECRET)}`;
 
