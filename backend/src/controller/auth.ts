@@ -9,10 +9,6 @@ import { JWT_SECRET } from '../utils/secrets';
 export async function register(req: Request, res: Response) {
   const { firstName, lastName, email, password } = req.body;
 
-  console.log({ firstName, password });
-
-  console.log({ User: JSON.stringify(User) });
-
   try {
     const existingUser = await User.findOne({ email });
 
@@ -22,7 +18,7 @@ export async function register(req: Request, res: Response) {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    console.log({ existingUser, hashedPassword });
+    console.log({ firstName, lastName, email, password });
 
     const user = new User({
       firstName,

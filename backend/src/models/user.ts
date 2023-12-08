@@ -37,8 +37,6 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-userSchema.methods.comparePassword = function (password: string) {
-  return bcrypt.compare(password, this.password);
-};
+userSchema.index({ email: 'text' });
 
 export default mongoose.model('User', userSchema);

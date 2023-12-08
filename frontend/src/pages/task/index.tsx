@@ -72,13 +72,13 @@ export default function Home() {
     console.log(filters);
     const fetchData = async () => {
       try {
-        const queryfilters = {
+        const queryFilters = {
           limit,
           skip,
           searchQuery,
           filters,
         };
-        const data = await getAllTask(queryfilters, authToken);
+        const data = await getAllTask(queryFilters, authToken);
         setTasks(data.tasks);
         setTotalItems(data.totalTasksCount);
       } catch (error) {
@@ -86,7 +86,15 @@ export default function Home() {
       }
     };
     fetchData();
-  }, [currentPage, debouncedSearchValue, skip, refetch, filters]); // The empty array [] as the second argument ensures this effect runs only once on mount
+  }, [
+    currentPage,
+    debouncedSearchValue,
+    skip,
+    refetch,
+    filters,
+    searchQuery,
+    authToken,
+  ]);
 
   return (
     <>

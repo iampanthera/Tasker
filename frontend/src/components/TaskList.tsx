@@ -14,6 +14,13 @@ const TaskList: React.FC<TaskListProps> = ({
   handleTaskDelete,
   handleTaskEdit,
 }) => {
+  if (!taskData.length) {
+    return (
+      <div className='flex justify-center items-center h-96'>
+        <p className='text-2xl text-gray-400'>No tasks found</p>
+      </div>
+    );
+  }
   return (
     <div className='container mx-auto px-4'>
       <ul className='divide-y divide-gray-100'>
