@@ -6,7 +6,6 @@ import AddTaskModal from '../../components/Task/TaskModal.tsx';
 import TaskList from '../../components/Task/TaskList';
 import Pagination from '../../components/Shared/Pagination';
 import Navbar from '../../components/Shared/Navbar';
-import Filters from '../../components/Task/FilterBar';
 
 import { getAllTask, deleteTask } from '../../api/taskApi';
 
