@@ -30,7 +30,7 @@ const TaskSchema = new Schema<ITask>(
     user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     reminderFrequency: {
       type: String,
-      enum: ['daily', 'weekly', 'monthly'], 
+      enum: ['daily', 'weekly', 'monthly'],
       default: 'daily',
     },
     reminderDateTime: { type: Date },
