@@ -8,6 +8,8 @@ interface ITask extends Document {
   status?: 'pending' | 'in progress' | 'completed';
   tags?: string[];
   user: Schema.Types.ObjectId;
+  reminderFrequency?: 'daily' | 'weekly' | 'monthly';
+  reminderDateTime?: Date;
 }
 
 const TaskSchema = new Schema<ITask>(
@@ -26,6 +28,12 @@ const TaskSchema = new Schema<ITask>(
       validate: [arrayLimit, 'Exceeded the maximum number of tags (5).'],
     },
     user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    reminderFrequency: {
+      type: String,
+      enum: ['daily', 'weekly', 'monthly'], 
+      default: 'daily',
+    },
+    reminderDateTime: { type: Date },
   },
   { timestamps: true }
 );
