@@ -33,3 +33,6 @@ if (!MONGO_URI) {
 }
 
 export const JWT_SECRET = (process.env.JWT_SECRET as string) || '';
+
+export const SYSTEM_EMAIL = process.env.EMAIL;
+export const SYSTEM_EMAIL_PASS = process.env.PASS;

@@ -1,6 +1,12 @@
 import { Request, Response } from 'express';
+
+const cron = require('node-cron');
+
 import Task from '../models/task';
 import User from '../models/user';
+
+import upload from '../utils/fileSave';
+import { sendReminderEmail } from '../utils/emailSender';
 
 interface AuthenticatedRequest extends Request {
   userId?: string;
@@ -73,23 +79,34 @@ export const getTaskById = async (req: AuthenticatedRequest, res: Response) => {
 
 export const createTask = async (req: AuthenticatedRequest, res: Response) => {
   try {
-    const { title, description, dueDate, priority, status, tags } = req.body;
+          const {
+        title,
+        description,
+        dueDate,
+        priority,
+        status,
+        tags,
+        reminderFrequency,
+        reminderDateTime,
+      } = req.body;
 
-    const user = await User.findById(req?.userId);
+      const user = await User.findById(req?.userId);
 
-    const task = new Task({
-      title,
-      description,
-      dueDate,
-      priority,
-      status,
-      tags,
-      user: user?._id,
-    });
+      const task = new Task({
+        title,
+        description,
+        dueDate,
+        priority,
+        status,
+        tags,
+        user: user?._id,
+        reminderFrequency,
+        reminderDateTime,
+      });
 
-    await task.save();
-    res.json({ message: 'Task created successfully', task });
-  } catch (error) {
+      await task.save();
+      res.json({ message: 'Task created successfully', task });
+      } catch (error) {
     res.status(500).json({ message: 'Error creating task' });
   }
 };
@@ -134,3 +151,49 @@ export const deleteTask = async (req: AuthenticatedRequest, res: Response) => {
     res.status(500).json({ message: 'Error deleting task' });
   }
 };
+
+export const uploadFile = (req: Request, res: Response) => {
+  upload.single('file')(req, res, (err: any) => {
+    if (err) {
+      return res.status(400).json({ message: 'Error uploading file', error: err.message });
+    }
+
+    const file = req.file as Express.Multer.File;
+
+    if (!file) {
+      return res.status(400).json({ message: 'No file uploaded' });
+    }
+
+    // File details available in req.file object
+    console.log('File details:', file);
+
+    res.status(200).json({ message: 'File uploaded successfully' });
+  });
+};
+
+cron.schedule('0 0 * * *', async () => {
+  try {
+    const tasks = await Task.find({
+      reminderDateTime: { $lte: new Date() },
+    }).populate('user');
+
+    console.log(tasks);
+
+    tasks.forEach(async (task) => {
+      if (task.reminderFrequency === 'daily') {
+        await sendReminderEmail(task);
+      } else if (task.reminderFrequency === 'weekly') {
+        // Check if it's the right day to send a weekly reminder
+        const taskDayOfWeek = task.reminderDateTime!.getDay();
+        const currentDayOfWeek = new Date().getDay();
+
+        // Check if the day of the week matches for the reminder
+        if (taskDayOfWeek === currentDayOfWeek) {
+          await sendReminderEmail(task);
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching tasks for reminders:', error);
+  }
+});
