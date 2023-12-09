@@ -171,7 +171,7 @@ export const uploadFile = (req: Request, res: Response) => {
   });
 };
 
-cron.schedule('* * * * *', async () => {
+cron.schedule('0 0 * * *', async () => {
   try {
     const tasks = await Task.find({
       reminderDateTime: { $lte: new Date() },
