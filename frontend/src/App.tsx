@@ -44,7 +44,7 @@ const App: React.FC = () => {
           <Route path='/register' element={<Auth />} />
 
           <Route
-            path='/home'
+            path='/'
             element={
               <PrivateRoute>
                 <Home />

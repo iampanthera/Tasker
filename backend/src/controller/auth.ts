@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import passport from 'passport';
+import * as bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+
 import User from '../models/user';
-import bcrypt from 'bcrypt';
 import { JWT_SECRET } from '../utils/secrets';
 
 // Route handler for signup

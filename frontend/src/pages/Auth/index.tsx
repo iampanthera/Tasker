@@ -32,7 +32,7 @@ export default function Auth({ isLogin = false }: { isLogin?: boolean }) {
           setCookie('authToken', token);
           formik.resetForm();
           toast.success('Logged in successfully');
-          navigate('/home');
+          navigate('/');
         } else {
           await register({
             firstName: values.firstName,

@@ -1,7 +1,19 @@
-FROM node:14.14.0-alpine
+FROM node:18
+
+# Install libc6-compat
+# RUN apk --no-cache add libc6-compat
+
+# Set the working directory
 WORKDIR /app
 
-COPY ./package.json ./
-RUN npm i
+# Copy package.json and package-lock.json
+COPY package*.json ./
 
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application
+COPY . .
+
+# Build and start the application
 CMD ["npm", "run", "start"]
